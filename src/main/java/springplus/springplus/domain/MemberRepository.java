@@ -1,4 +1,4 @@
-package springplus.springplus;
+package springplus.springplus.domain;
 
 import org.springframework.stereotype.Repository;
 
