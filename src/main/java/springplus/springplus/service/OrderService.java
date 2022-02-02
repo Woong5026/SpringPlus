@@ -11,6 +11,7 @@ import springplus.springplus.domain.OrderItem;
 import springplus.springplus.repository.ItemRepository;
 import springplus.springplus.repository.MemberRepository;
 import springplus.springplus.repository.OrderRepository;
+import springplus.springplus.repository.OrderSearch;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class OrderService {
     private final ItemRepository itemRepository;
 
     // 주문
+    @Transactional
     public Long order(Long memberId, Long itemId, int count){
         //엔티티 조회
         Member member = memberRepository.findOne(memberId);
@@ -52,8 +54,8 @@ public class OrderService {
         order.cancle();
     }
 
-    // 검색
-//    public List<Order> findOrders(OrderSearch orderSearch){
-//        return orderRepository.findAll(orderSearch);
-//    }
+     // 검색
+    public List<Order> findOrders(OrderSearch orderSearch){
+        return orderRepository.findAllByString(orderSearch);
+    }
 }
