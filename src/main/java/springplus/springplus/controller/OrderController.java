@@ -51,8 +51,8 @@ public class OrderController {
         return "order/orderList";
     }
     // 취소
-    @PostMapping("/orders/{orderId}/cancle")
-    public String cancleOrder(@PathVariable("orderId") Long orderId){
+    @PostMapping("/orders/{orderId}/cancel")
+    public String cancelOrder(@PathVariable("orderId") Long orderId){
         orderService.cancleOrder(orderId);
         return "redirect:/orders";
     }
