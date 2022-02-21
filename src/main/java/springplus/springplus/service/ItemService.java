@@ -3,7 +3,6 @@ package springplus.springplus.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springplus.springplus.domain.Item.Book;
 import springplus.springplus.domain.Item.Item;
 import springplus.springplus.repository.ItemRepository;
 

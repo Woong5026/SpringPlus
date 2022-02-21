@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import springplus.springplus.domain.Order;
+import springplus.springplus.repository.order.simplequery.OrderSimpleQueryDto;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -56,6 +58,39 @@ public class OrderRepository {
         }
         return query.getResultList();
     }
+
+
+
+    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m " +
+                        " join fetch o.delivery d ", Order.class
+        ).getResultList();
+    }
+
+
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch  o.member m" +
+                        " join fetch  o.delivery d" +
+                        " join fetch o.orderItems oi" +
+                        " join fetch oi.item", Order.class
+        ).getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m " +
+                        " join fetch o.delivery d ", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
 
 //        public List<Order> findAll(OrderSearch orderSearch){
 //
