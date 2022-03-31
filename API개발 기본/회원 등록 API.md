@@ -85,7 +85,7 @@ Member 엔티티 name 필드에 @NotEmpty를 추가하면 회원 이름 중복 �
   
   ---
   
-  - MemberApiController 
+  - MemberApiController.java - v2(DTO 방식) 추가
   
   ```java
   
@@ -118,10 +118,12 @@ static class **CreateMemberRequest** {
 
 3. 엔티티가 변해도 API 스펙이 변하지 않는다.
 
--> Member 엔티티의 name을 username으로 변경해도 DTO에서 name으로 받고 Member의 username으로 넘겨주면 된다. 
-> 즉, 중간 처리 과정이 있기 때문에 엔티티는 엔티티대로 자유롭게 변경해도 된다.
-  
+-> Member 엔티티의 name을 username으로 변경해도 DTO에서 name으로 받고 Member의 username으로 넘겨주면 된다. <br/>
+-> 즉, 중간 처리 과정이 있기 때문에 엔티티는 엔티티대로 자유롭게 변경해도 된다. <br/>
+-> 만약 이름을 변경할 경우가 생긴다면 dto의 이름을 바꾸면 된다(대신 포스트맨에서는 dto의 값으로 조회해야 한다)   
 ---
+ 
+ <br/>
   
 <정리>
 
