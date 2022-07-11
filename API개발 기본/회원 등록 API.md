@@ -121,10 +121,44 @@ static class **CreateMemberRequest** {
 -> Member 엔티티의 name을 username으로 변경해도 DTO에서 name으로 받고 Member의 username으로 넘겨주면 된다. <br/>
 -> 즉, 중간 처리 과정이 있기 때문에 엔티티는 엔티티대로 자유롭게 변경해도 된다. <br/>
 -> 만약 이름을 변경할 경우가 생긴다면 dto의 이름을 바꾸면 된다(대신 포스트맨에서는 dto의 값으로 조회해야 한다)   
----
+ 
+```java
+
+ @PostMapping("/api/v2/membersCheck")
+    public CreateMemberResponse saveMemberV9(@RequestBody @Valid CreateMemberRequest request){
+        Member member = new Member();
+        member.setUsername(request.getName());
+
+        Long id = memberService.join(member);
+        return new CreateMemberResponse(id);
+    }
+ 
+```
+
+3번의 API 스펙이 변하지 않는다를 검증하기 위해 새로운 username이라는 필드를 멤버 엔티티에 생성하고 <br/>
+CreateMemberRequest의 name과 매핑한 결과 잘 동작되었다.  <br/>
+즉, 이는 dto에서 name으로 받아 클라이언트로 넘겨주기 때문에 엔티티의 필드를 변경해도 상관없다는 것이 검증되었다 
+ 
+<br/>
+ 
+ ---
  
  <br/>
   
 <정리>
 
 다양한 종류의 데이터를 담고 있는 여러 API들을 각각에 알맞은 DTO에 담고 컨트롤러에서 DTO 데이터를 알맞게 엔티티에 전달하는 방식을 사용해야 한다.
+ 
+<br/> 
+ 
++) 참고 : 이너 클래스
+
+예제에서는 DTO를 이너 클래스로 사용했다. 물론 따로 파일을 만들어서 DTO를 관리해도 좋다. <br/>
+따로 파일을 만들게 되면 다른 컨트롤러에서도 자유롭게 사용할 수 있다.  <br/>
+이너 클래스의 경우 해당 클래스 안에서만 한정적으로 사용한다는 의미를 부여할 수 있다.
+
+또한 이너 클래스는 항상 static 클래스를 사용해야 한다. <br/>
+CreateMemberRequest의 경우처럼 외부에서 생성하는 경우 static 클래스가 아니면 생성할 수 없기 때문이다.  <br/>
+(이 밖에 여러 이점들이 있으니 꼭 static을 사용하자) 
+ 
+ <br/>
