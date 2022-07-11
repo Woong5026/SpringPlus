@@ -74,7 +74,7 @@ v1 : 응답 값으로 엔티티를 직접 외부에 노출
   ```java
   
   @GetMapping("/api/v2/members")
-public Result memberV2() {
+public Result memberV2() { // 응답값 자체를 껍데기 클래스
     List<Member> findMembers = memberService.findMembers();
     List<MemberDto> collect = findMembers.stream()
     .map(m -> new MemberDto(m.getName()))
@@ -85,8 +85,8 @@ public Result memberV2() {
 
 @Data
 @AllArgsConstructor
-static class Result<T> {
-    private T data;
+static class Result<T> { // 위에서 Result(collect)를 반환했으니 
+    private T data; // 이제 data필드의 값은 리스트가 반환된다
 }
 
 @Data
