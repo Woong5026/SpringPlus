@@ -31,6 +31,10 @@ static class UpdateMemberResponse {
 +) 참고 : 롬복을 사용할 때, 핵심 엔티티에는 보통 @Getter만 사용하는 것이 좋지만,<br/>
 이처럼 단순 데이터 전송용 DTO에는 @Data같은 애노테이션을 자유롭게 사용해도 좋다.
 
+<@PatchMapping>
+
+회원 정보의 일부를 수정하는 것이기 때문에 Patch 메서드를 사용한다.
+
 - MemberService.java
 
 ```java
@@ -48,7 +52,8 @@ public void update(Long id, String name) {
 
 +) update와 find 분리
 
-코드를 보면 변경 감지로 엔티티를 수정한 뒤, 다시 id 값을 통해 엔티티를 조회한다.
+코드를 보면 변경 감지로 엔티티를 수정한 뒤, 다시 id 값을 통해 엔티티를 조회한다. <br/>
+merge 메서드는 모든 필드 값을 전부 변경해야 하기 때문에 변경되지 않는 필드들은 null 값을 갖게 된다.
 
 ```java
 
