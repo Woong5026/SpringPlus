@@ -144,7 +144,10 @@ static class **CreateMemberRequest** {
   
   1. 엔티티와 화면 렌더링 계층을 위한 로직을 분리할 수 있다.
 
--> @NotEmpty를 DTO에 붙일 수 있다
+-> @NotEmpty를 DTO에 붙일 수 있다<br/>
+
+ 여기서 분리를 한다는 것은 엔티티의 필드값들은 건드리지 않고 어떤 스펙에서는 @NotEmpty가 필요할 수도 있고 <br/>
+ 필요하지 않을 스펙도 있기때문에 상황에따라 CreateMemberRequest와 같은 dto를 만들어 상황에따라 다르게 만들수 있다는 것이다
 
 2. 엔티티와 API 스펙을 명확하게 분리할 수 있다.
 
@@ -154,7 +157,10 @@ static class **CreateMemberRequest** {
 
 -> Member 엔티티의 name을 username으로 변경해도 DTO에서 name으로 받고 Member의 username으로 넘겨주면 된다. <br/>
 -> 즉, 중간 처리 과정이 있기 때문에 엔티티는 엔티티대로 자유롭게 변경해도 된다. <br/>
--> 만약 이름을 변경할 경우가 생긴다면 dto의 이름을 바꾸면 된다(대신 포스트맨에서는 dto의 값으로 조회해야 한다)   
+-> 만약 이름을 변경할 경우가 생긴다면 **dto의 이름을 바꾸면 된다** (대신 포스트맨에서는 dto의 값으로 조회해야 한다)
+ 
+ 엔티티를 바꿔도 username이 dto의 name으로 자동으로 치환되는 것이 아니라 <br/>
+ username으로 엔티티 필드값을 변경하면 api스펙에서 컴파일 오류등이 뜨기 때문에 바뀐다면 바뀐 필드값과 dto를 변경하면 되니 편리하다는 것
  
 ```java
 
@@ -169,9 +175,20 @@ static class **CreateMemberRequest** {
  
 ```
 
-3번의 API 스펙이 변하지 않는다를 검증하기 위해 새로운 username이라는 필드를 멤버 엔티티에 생성하고 <br/>
-CreateMemberRequest의 name과 매핑한 결과 잘 동작되었다.  <br/>
-즉, 이는 dto에서 name으로 받아 클라이언트로 넘겨주기 때문에 엔티티의 필드를 변경해도 상관없다는 것이 검증되었다 
++) 파라미터를 엔티티가 아닌 dto로 받으면 엔티티 스펙을 바꾸어도 어디서 오류가 나는지 확인할 수 있고<br/>
+아래처럼 dto를 사용하면 해당 로직에는 name만 사용한다는 것을 알 수 있다<br/>
+(Member엔티티를 그대로 파라미터로 쓴다면 어떤 필드들을 쓰는지 타인 입장에서는 모를 수 있다)
+ 
+```java
+ 
+ @Data
+    static class CreateMemberRequest{
+        @NotEmpty
+        private String name;
+    }
+ 
+```
+ 
  
 <br/>
  
