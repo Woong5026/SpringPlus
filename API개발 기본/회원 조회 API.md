@@ -109,6 +109,55 @@ static class MemberDto {
 
 <br/>    
     
+ +) Result 클래스를 만들어서 response 데이터를 보내고 이때 제너릭으로 설정한 이유?
+    
+현재 코드
+
+```java
+    
+static class Result<T> {
+
+private T data;
+
+}
+    
+```
+        
+그런데 제너릭을 쓰지 않는 반환용 DTO를 만들어서
+    
+```java
+    
+static class ResultDto{
+
+private List<OrderDto> orderDtos
+
+}
+    
+```
+    
+이렇게 하지 않는 이유가 궁금했다    
+
++) Answer
+    
+Result 객체가 생기기 전에는 MemberDto, OrderDto 등 각각 서로 다른 타입으로 반환하고 있다. <br/>
+MemberDto는 멤버 정보를 담고 있는 객체이고, OrderDto는 주문 정보를 담고 있는 객체
+
+예를들어, 응답 데이터로 특정 도메인의 정보(Member, Order 등)뿐만 아니라 응답 상태 코드를 추가적으로 나타내라는 요구사항이 추가된다면 <br/>
+MemberDto, OrderDto는 응답 상태 코드를 가지기에는 객체의 정체성과 맞지 않다. 응답 상태 코드는 멤버 정보도 아니고, 주문 정보도 아니기 때문
+
+따라서 API 컨트롤러의 응답을 추상화한 Result라는 클래스를 도출
+
+Result는 응답을 추상화했기 때문에 사용자가 요청한 데이터(MemberDto, OrderDto)도 담아야 하고 <br/>
+응답 그 자체에 대한 데이터(StatusCode)도 담을 수 있어야 한다.
+
+이런 맥락에서 Result 객체의 핵심인 사용자가 요청한 데이터를 받는 data 필드가 생기게 되고, 추가 요구사항이었던 statusCode도 추가 가능 <br/>
+이때 사용자가 요청한 데이터가 어떤 타입이든 Result 객체에서 받을 수 있으려면 제네릭을 사용하여 명시한 타입을 data의 타입으로 사용할 수 있게 하는 것
+
+실무에서 어떤 것을 선호한다기 보다, 제네릭이 필요한 상황이 있다면 제네릭을 사용
+
+    
+<br/>    
+    
 * 결과
     
 ```java
@@ -159,4 +208,9 @@ static class MemberDto {
 ```
     
 이렇게 쉽게 추가할 수 있다.
+    
+만약 간단한 정보를 조회하는 칼럼하나가 필요하다면 위와 같이 count필드를 추가하면 되고 <br/>
+List로 스펙이 굳어버리면 해당정보가 필요할때 엔티티에 추가해야 하는데 엔티티는 한 곳에서만 쓰이는 것이 아닌 여러 곳에서 사용되기에 <br/>
+하나의 메소드에서만 필드정보가 필요하다면 컬렉션 안에 넣어주면 엔티티 변경없이 추가 정보를 조회할 수 있다    
+ 
 >  API 개발은 DTO가 필수!
