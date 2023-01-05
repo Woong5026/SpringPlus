@@ -84,6 +84,20 @@ Member 엔티티 name 필드에 @NotEmpty를 추가하면 회원 이름 중복 �
 < CreateMemberResponse>
  
 리턴용 객체이다. 객체에 데이터를 저장하고 리턴해주면 알아서 json 형식으로 변경해 클라이언트에 보내준다.
+
+<br/>
+
++) <br/>
+Q) memberService.join(member); 의 반환 값이 엔티티가 아니고 단순히 Long id인 값인데도 return id; 로 안하고 <br/>
+CreateMemberResponse 클래스를 만들어 return new CreateMemberResponse(id);로 감싸서 리턴하는 이유가 무엇일까?
+
+A) 단순히 long으로 반환하게 되면 클라이언트는 JSON을 받는 것이 아니라 HTTP Body에 단순히 숫자 하나를 받게 된다
+
+CreateMemberResponse로 반환: {"id":10} (@Data를 통해 json으로 반환) <br/>
+Long으로 반환 : 10(Long타입 반환)
+
+클라이언트와 서버간에 약속을 하는 것이기 때문에 단순히 Long으로 반환해도 상관은 없지만, <br/>
+HTTP API에서는 데이터 응답을 JSON으로 받는다고 서로 약속을 하기 때문에 JSON으로 내려주는 것이 좋다
  
 <br/>
  
